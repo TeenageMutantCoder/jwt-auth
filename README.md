@@ -7,3 +7,11 @@ Tech stack:
 - MongoDB
 - Express
 - Node
+
+## How to Run
+
+1. Open a terminal
+2. Clone the github repository with `git clone https://github.com/TeenageMutantCoder/jwt-auth`
+3. Change directories into the repository folder with `cd jwt-auth`
+4. Install needed dependencies with `npm install` **Note: Must have Node installed before doing this**
+5. Run the server with `npm start`
