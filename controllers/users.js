@@ -89,9 +89,7 @@ async function editUserData(req, res) {
     runValidators: true,
   });
   return res.json({
-    msg: `Successfully updated user with id "${id}" using the data: "${JSON.stringify(
-      data
-    )}"`,
+    msg: `Successfully updated user with id "${id}"`,
     data: updatedUser,
   });
 }
