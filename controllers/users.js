@@ -80,6 +80,7 @@ async function getUserData(req, res) {
 async function editUserData(req, res) {
   const id = parseInt(req.params.id);
   const data = req.body;
+  if (data["_id"]) delete data["_id"];
   const userExists = await User.exists({ _id: id });
   if (!userExists) {
     return res.json({ msg: `Failed to find user with id "${id}"` });
