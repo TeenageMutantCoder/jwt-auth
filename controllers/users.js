@@ -13,14 +13,6 @@ async function deleteAllUsers(req, res) {
   });
 }
 
-async function getNewId() {
-  const numOfUsers = await User.find({}).count();
-  if (numOfUsers === 0) return 1;
-  let highestId = await User.find({}).sort({ _id: "descending" }).limit(1);
-  highestId = highestId[0].id;
-  return parseInt(highestId) + 1;
-}
-
 async function createUser(req, res) {
   const { username, password } = req.body;
   const userExists = await User.exists({ username: username });
