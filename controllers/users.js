@@ -1,3 +1,4 @@
+const bcrypt = require("bcryptjs");
 const { StatusCodes } = require("http-status-codes");
 const User = require("../models/User");
 
@@ -24,11 +25,13 @@ async function createUser(req, res) {
       msg: `Failed to create user. User already exists with username "${username}"`,
     });
   }
+
+  const hashedPassword = await bcrypt.hash(password, 10);
   const newId = await User.getNewId();
   const newUser = new User({
     _id: newId,
     username: username,
-    password: password,
+    password: hashedPassword,
   });
   await newUser.save();
   return res
@@ -38,10 +41,16 @@ async function createUser(req, res) {
 
 async function findUser(req, res) {
   const { username, password } = req.body;
-  const user = await User.find({ username: username, password: password });
+  const user = await User.findOne({ username: username });
   if (!user) {
-    return res.status(StatusCodes.NOT_FOUND).json({
-      msg: `Failed to find user with username "${username}" and password "${password}"`,
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      msg: `Invalid username. There is no user with username "${username}"`,
+    });
+  }
+  const isValid = await bcrypt.compare(password, user.password);
+  if (!isValid) {
+    return res.status(StatusCodes.UNAUTHORIZED).json({
+      msg: `Invalid password. There is no user with username "${username}" and password "${password}"`,
     });
   }
   return res

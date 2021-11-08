@@ -1,22 +1,10 @@
 const router = require("express").Router();
 
-const {
-  getAllUsers,
-  createUser,
-  findUserById,
-  editUserData,
-  deleteUser,
-  deleteAllUsers,
-} = require("../controllers/users");
+const { findUser, createUser } = require("../controllers/users");
 
-router.route("/").get((req, res) => {
-  res.send("The API is working fine.");
-});
+router.route("/login").get().post(findUser);
+router.route("/register").get().post(createUser);
+const apiRoutes = require("./api");
+router.use("/api/v1/", apiRoutes);
 
-router.route("/users").get(getAllUsers).post(createUser).delete(deleteAllUsers);
-router
-  .route("/users/:id")
-  .get(findUserById)
-  .patch(editUserData)
-  .delete(deleteUser);
 module.exports = router;

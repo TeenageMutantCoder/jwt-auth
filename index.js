@@ -14,7 +14,7 @@ app.use(express.json());
 
 // Routes
 const routes = require("./routes");
-app.use("/api/v1/", routes);
+app.use(routes);
 
 app.listen(port, () => {
   console.log(`Backend application is listening at http://localhost:${port}/`);
