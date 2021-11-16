@@ -13,5 +13,9 @@ Tech stack:
 1. Open a terminal
 2. Clone the github repository with `git clone https://github.com/TeenageMutantCoder/jwt-auth`
 3. Change directories into the repository folder with `cd jwt-auth`
-4. Install needed dependencies with `npm install` **Note: Must have Node installed before doing this**
-5. Run the server with `npm start`
+4. Create a .env file with `touch .env` or `echo. .env`
+5. Open the .env file in whatever text editor you want and add `MONGO_URI=` with a url to your mongodb database.
+6. Also add `IS_PROD=true` or `IS_PROD=false` depending on whether you want to run in production (true) or development (false) mode.
+7. Save the changes to your .env file.
+8. Install needed dependencies with `npm install` **Note: Must have Node installed before doing this**
+9. Run the server with `npm start`
