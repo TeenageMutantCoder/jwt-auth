@@ -56,13 +56,148 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/users/1",
+					"raw": "{{URL}}/users/6192bff82daaf8e54025ee04",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
 						"users",
-						"1"
+						"6192bff82daaf8e54025ee04"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get Specific User's Expenses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/users/6193112f91bd7db28d73601a/expenses",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"users",
+						"6193112f91bd7db28d73601a",
+						"expenses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete Specific User's Expenses",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/users/6192bff82daaf8e54025ee04/expenses",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"users",
+						"6192bff82daaf8e54025ee04",
+						"expenses"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Get User's Specific Expense",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/users/6193112f91bd7db28d73601a/expenses/6193114491bd7db28d736024",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"users",
+						"6193112f91bd7db28d73601a",
+						"expenses",
+						"6193114491bd7db28d736024"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Edit User's Specific Expense",
+			"request": {
+				"method": "PATCH",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cost\": 2\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/users/6193112f91bd7db28d73601a/expenses/6193114491bd7db28d736024",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"users",
+						"6193112f91bd7db28d73601a",
+						"expenses",
+						"6193114491bd7db28d736024"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete User's Specific Expense",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{URL}}/users/6192bff82daaf8e54025ee04/expenses/6193113e91bd7db28d736020",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"users",
+						"6192bff82daaf8e54025ee04",
+						"expenses",
+						"6193113e91bd7db28d736020"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Add Expense",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"cost\": 1,\r\n    \"date\": \"\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{URL}}/users/61930a6cb210f027f8d95f62/expenses",
+					"host": [
+						"{{URL}}"
+					],
+					"path": [
+						"users",
+						"61930a6cb210f027f8d95f62",
+						"expenses"
 					]
 				}
 			},
@@ -75,7 +210,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"username\": \"asdf\", \"password\": \"jasklfjsad\"}",
+					"raw": "{\"email\": \"aSdf.sdjf@gmail.com\", \"password\": \"jasklfjsad\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -101,7 +236,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\"_id\": 2, \"username\": \"fjlaks\", \"password\": \"jasfdklfjsad123\"}",
+					"raw": "{\"email\": \"fjlaks@gmail.com\", \"password\": \"jasfdklfjsad123\"}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -109,13 +244,13 @@
 					}
 				},
 				"url": {
-					"raw": "{{URL}}/users/1",
+					"raw": "{{URL}}/users/6192bff82daaf8e54025ee04",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
 						"users",
-						"1"
+						"6192bff82daaf8e54025ee04"
 					]
 				}
 			},
@@ -144,13 +279,13 @@
 				"method": "DELETE",
 				"header": [],
 				"url": {
-					"raw": "{{URL}}/users/1",
+					"raw": "{{URL}}/users/6192bff82daaf8e54025ee04",
 					"host": [
 						"{{URL}}"
 					],
 					"path": [
 						"users",
-						"1"
+						"6192bff82daaf8e54025ee04"
 					]
 				}
 			},
@@ -163,7 +298,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"abcd\",\r\n    \"password\": \"efgh\"\r\n}",
+					"raw": "{\r\n    \"email\": \"abcd@gmail.com\",\r\n    \"password\": \"efgh\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
@@ -191,7 +326,7 @@
 				"header": [],
 				"body": {
 					"mode": "raw",
-					"raw": "{\r\n    \"username\": \"abcd\",\r\n    \"password\": \"efgh\"\r\n}",
+					"raw": "{\r\n    \"email\": \"abcd@gmail.com\",\r\n    \"password\": \"efgh\"\r\n}",
 					"options": {
 						"raw": {
 							"language": "json"
