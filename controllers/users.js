@@ -130,9 +130,146 @@ async function getUserExpenses(req, res) {
       .status(StatusCodes.NOT_FOUND)
       .json({ msg: `Failed to find user with id "${id}"` });
   }
-  return res
-    .status(StatusCodes.OK)
-    .json({ msg: "Successfully returned user data", data: user.expenses });
+  return res.status(StatusCodes.OK).json({
+    msg: `Successfully returned all expenses for user with id "${id}"`,
+    data: user.expenses,
+  });
+}
+
+async function deleteUserExpenses(req, res) {
+  const { id } = req.params;
+  if (id.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid ID. ID must be 24 characters.` });
+  }
+  const user = await User.findById(id);
+  if (!user) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find user with id "${id}"` });
+  }
+  await user.expenses.remove();
+  await user.save();
+  return res.status(StatusCodes.OK).json({
+    msg: `Successfully deleted all expenses for user with id "${id}"`,
+  });
+}
+
+async function addUserExpense(req, res) {
+  const { id } = req.params;
+  const data = req.body;
+  if (id.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid ID. ID must be 24 characters.` });
+  }
+  const user = await User.findById(id);
+  if (!user) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find user with id "${id}"` });
+  }
+  await user.expenses.push(data);
+  await user.save();
+  return res.status(StatusCodes.OK).json({
+    msg: `Successfully added expense to user with id "${id}"`,
+    data: user.expenses[user.expenses.length - 1],
+  });
+}
+
+async function getUserExpense(req, res) {
+  const { userId, expenseId } = req.params;
+  if (userId.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid user ID. ID must be 24 characters.` });
+  }
+  if (expenseId.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid expense ID. ID must be 24 characters.` });
+  }
+  const user = await User.findById(userId);
+  if (!user) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find user with id "${userId}"` });
+  }
+  const expense = await user.expenses.id(expenseId);
+  if (!expense) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find expense with id "${expenseId}"` });
+  }
+  return res.status(StatusCodes.OK).json({
+    msg: `Successfully returned expense with id "${expenseId}" from user with id "${userId}"`,
+    data: expense,
+  });
+}
+
+async function deleteUserExpense(req, res) {
+  const { userId, expenseId } = req.params;
+  if (userId.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid user ID. ID must be 24 characters.` });
+  }
+  if (expenseId.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid expense ID. ID must be 24 characters.` });
+  }
+  const user = await User.findById(userId);
+  if (!user) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find user with id "${userId}"` });
+  }
+  const expense = await user.expenses.id(expenseId);
+  if (!expense) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find expense with id "${expenseId}"` });
+  }
+  await expense.remove();
+  await user.save();
+  return res.status(StatusCodes.OK).json({
+    msg: `Successfully deleted expense with id "${expenseId}" from user with id "${userId}"`,
+  });
+}
+
+async function editUserExpense(req, res) {
+  const { userId, expenseId } = req.params;
+  const data = req.body;
+  if (userId.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid user ID. ID must be 24 characters.` });
+  }
+  if (expenseId.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid expense ID. ID must be 24 characters.` });
+  }
+  const user = await User.findById(userId);
+  if (!user) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find user with id "${userId}"` });
+  }
+  const expense = await user.expenses.id(expenseId);
+  if (!expense) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find expense with id "${expenseId}"` });
+  }
+  await expense.set(data);
+  await user.save();
+  return res.status(StatusCodes.OK).json({
+    msg: `Successfully edited expense with id "${expenseId}" from user with id "${userId}"`,
+    data: expense,
+  });
 }
 
 module.exports = {
@@ -144,4 +281,9 @@ module.exports = {
   deleteUser,
   editUser,
   getUserExpenses,
+  deleteUserExpenses,
+  addUserExpense,
+  getUserExpense,
+  deleteUserExpense,
+  editUserExpense,
 };
