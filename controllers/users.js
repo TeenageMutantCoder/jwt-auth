@@ -18,19 +18,17 @@ async function deleteAllUsers(req, res) {
 }
 
 async function createUser(req, res) {
-  const { username, password } = req.body;
-  const userExists = await User.exists({ username: username });
+  const { email, password } = req.body;
+  const userExists = await User.exists({ email });
   if (userExists) {
     return res.status(StatusCodes.FORBIDDEN).json({
-      msg: `Failed to create user. User already exists with username "${username}"`,
+      msg: `Failed to create user. User already exists with email "${email}"`,
     });
   }
 
   const hashedPassword = await bcrypt.hash(password, 10);
-  const newId = await User.getNewId();
   const newUser = new User({
-    _id: newId,
-    username: username,
+    email,
     password: hashedPassword,
   });
   await newUser.save();
@@ -40,17 +38,17 @@ async function createUser(req, res) {
 }
 
 async function findUser(req, res) {
-  const { username, password } = req.body;
-  const user = await User.findOne({ username: username });
+  const { email, password } = req.body;
+  const user = await User.findOne({ email });
   if (!user) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
-      msg: `Invalid username. There is no user with username "${username}"`,
+      msg: `Invalid email. There is no user with email "${email}"`,
     });
   }
   const isValid = await bcrypt.compare(password, user.password);
   if (!isValid) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
-      msg: `Invalid password. There is no user with username "${username}" and password "${password}"`,
+      msg: `Invalid password. There is no user with email "${email}" and password "${password}"`,
     });
   }
   return res
@@ -59,7 +57,12 @@ async function findUser(req, res) {
 }
 
 async function findUserById(req, res) {
-  const id = parseInt(req.params.id);
+  const { id } = req.params;
+  if (id.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid ID. ID must be 24 characters.` });
+  }
   const user = await User.findById(id);
   if (!user) {
     return res
@@ -72,7 +75,12 @@ async function findUserById(req, res) {
 }
 
 async function deleteUser(req, res) {
-  const id = parseInt(req.params.id);
+  const { id } = req.params;
+  if (id.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid ID. ID must be 24 characters.` });
+  }
   const deletedUser = await User.findByIdAndDelete(id);
   if (!deletedUser) {
     return res
@@ -84,21 +92,13 @@ async function deleteUser(req, res) {
     .json({ msg: `Successfully deleted user with id "${id}"` });
 }
 
-async function getUserData(req, res) {
-  const id = parseInt(req.params.id);
-  const user = await User.findById(id);
-  if (!user) {
+async function editUser(req, res) {
+  const { id } = req.params;
+  if (id.length !== 24) {
     return res
-      .status(StatusCodes.NOT_FOUND)
-      .json({ msg: `Failed to find user with id "${id}"` });
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid ID. ID must be 24 characters.` });
   }
-  return res
-    .status(StatusCodes.OK)
-    .json({ msg: "Successfully returned user data", data: user.data });
-}
-
-async function editUserData(req, res) {
-  const id = parseInt(req.params.id);
   const data = req.body;
   if (data["_id"]) delete data["_id"];
   const userExists = await User.exists({ _id: id });
@@ -117,13 +117,31 @@ async function editUserData(req, res) {
   });
 }
 
+async function getUserExpenses(req, res) {
+  const { id } = req.params;
+  if (id.length !== 24) {
+    return res
+      .status(StatusCodes.BAD_REQUEST)
+      .json({ msg: `Invalid ID. ID must be 24 characters.` });
+  }
+  const user = await User.findById(id);
+  if (!user) {
+    return res
+      .status(StatusCodes.NOT_FOUND)
+      .json({ msg: `Failed to find user with id "${id}"` });
+  }
+  return res
+    .status(StatusCodes.OK)
+    .json({ msg: "Successfully returned user data", data: user.expenses });
+}
+
 module.exports = {
   getAllUsers,
+  deleteAllUsers,
   createUser,
   findUser,
   findUserById,
   deleteUser,
-  getUserData,
-  editUserData,
-  deleteAllUsers,
+  editUser,
+  getUserExpenses,
 };

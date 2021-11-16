@@ -1,19 +1,24 @@
 const mongoose = require("mongoose");
 
-const userSchema = new mongoose.Schema({
-  _id: Number,
-  username: String,
-  password: String,
-  data: [String],
+const expenseSchema = new mongoose.Schema({
+  name: { type: String, default: "" },
+  cost: { type: Number, min: 0, required: true },
+  date: { type: Date, required: true },
+  tags: [String],
 });
 
-userSchema.statics.getNewId = async function () {
-  const numOfUsers = await this.find({}).count();
-  if (numOfUsers === 0) return 1;
-  let highestId = await this.find({}).sort({ _id: "descending" }).limit(1);
-  highestId = highestId[0].id;
-  return parseInt(highestId) + 1;
-};
+const userSchema = new mongoose.Schema({
+  email: {
+    type: String,
+    lowercase: true,
+    unique: true,
+    matches:
+      /^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/, // https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
+    required: true,
+  },
+  password: { type: String, required: true },
+  expenses: [expenseSchema],
+});
 
 const userModel = mongoose.model("User", userSchema);
 
