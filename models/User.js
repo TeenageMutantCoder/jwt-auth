@@ -1,3 +1,4 @@
+const jwt = require("jsonwebtoken");
 const mongoose = require("mongoose");
 
 // https://stackoverflow.com/questions/201323/how-can-i-validate-an-email-address-using-a-regular-expression
@@ -25,8 +26,20 @@ const userSchema = new mongoose.Schema({
     required: true,
   },
   password: { type: String, required: true },
+  token: String,
   expenses: [expenseSchema],
 });
+
+userSchema.methods.generateToken = function () {
+  const token = jwt.sign(
+    { user_id: this._id, email: this.email },
+    process.env.JWT_SECRET,
+    {
+      expiresIn: "2h",
+    }
+  );
+  return token;
+};
 
 const userModel = mongoose.model("User", userSchema);
 

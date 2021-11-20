@@ -31,6 +31,10 @@ async function createUser(req, res) {
     email,
     password: hashedPassword,
   });
+
+  const token = newUser.generateToken();
+  newUser.token = token;
+
   await newUser.save();
   return res
     .status(StatusCodes.CREATED)
@@ -51,6 +55,9 @@ async function findUser(req, res) {
       msg: `Invalid password. There is no user with email "${email}" and password "${password}"`,
     });
   }
+  const token = user.generateToken();
+  user.token = token;
+  await user.save();
   return res
     .status(StatusCodes.OK)
     .json({ msg: "Successfully found user", data: user });
