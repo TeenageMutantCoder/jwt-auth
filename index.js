@@ -7,10 +7,8 @@ const app = express();
 const port = 3000;
 
 // Connect to database
-const mongoose = require("mongoose");
-mongoose.connect(process.env.MONGO_URI, (err) => {
-  if (err) throw err;
-});
+const connect = require("./db/connect");
+connect(process.env.MONGO_URI);
 
 // Middleware
 const loggerType = process.env.IS_PROD === "true" ? "combined" : "dev";
