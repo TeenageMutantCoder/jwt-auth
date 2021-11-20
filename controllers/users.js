@@ -45,8 +45,8 @@ async function findUser(req, res) {
       msg: `Invalid email. There is no user with email "${email}"`,
     });
   }
-  const isValid = await bcrypt.compare(password, user.password);
-  if (!isValid) {
+  const isValidPassword = await bcrypt.compare(password, user.password);
+  if (!isValidPassword) {
     return res.status(StatusCodes.UNAUTHORIZED).json({
       msg: `Invalid password. There is no user with email "${email}" and password "${password}"`,
     });
