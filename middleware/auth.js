@@ -5,7 +5,8 @@ module.exports = function () {
   const opts = {};
 
   opts.jwtFromRequest = ExtractJwt.fromAuthHeaderAsBearerToken();
-  opts.secretOrKey = process.env.JWT_SECRET;
+  opts.secretOrKey =
+    process.env.JWT_SECRET || "super_secretKeyNObodyWill_guess_it";
 
   passport.use(
     new JwtStrategy(opts, function (jwt_payload, done) {
