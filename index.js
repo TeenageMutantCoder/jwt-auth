@@ -5,7 +5,7 @@ const passport = require("passport");
 require("express-async-errors");
 const errorHandler = require("./middleware/errorHandler");
 const app = express();
-const port = 3000;
+const port = Number(process.env.PORT) || 3000;
 
 // Connect to database
 const connect = require("./db/connect");
