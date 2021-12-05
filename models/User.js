@@ -31,13 +31,10 @@ const userSchema = new mongoose.Schema({
 });
 
 userSchema.methods.generateToken = function () {
-  const token = jwt.sign(
-    { user_id: this._id, email: this.email },
-    process.env.JWT_SECRET,
-    {
-      expiresIn: "2h",
-    }
-  );
+  const token = jwt.sign({}, process.env.JWT_SECRET, {
+    expiresIn: "2h",
+    subject: this._id.toString(),
+  });
   return token;
 };
 
