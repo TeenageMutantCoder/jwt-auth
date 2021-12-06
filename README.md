@@ -13,8 +13,8 @@ Tech stack:
 1. Open a terminal
 2. Clone the github repository with `git clone https://github.com/TeenageMutantCoder/jwt-auth`
 3. Change directories into the repository folder with `cd jwt-auth`
-4. Edit the values of the variables in .env.example using your desired text editor
-5. Rename .env.example to .env using the command `mv .env.example .env` or `ren .env.example .env`
+4. Copy the contents from .env.example into a .env file using the command `cp .env.example .env` or `copy .env.example .env`
+5. Edit the values of the variables in .env using your desired text editor
 6. Install needed dependencies with `npm install` **Note: Must have Node installed before doing this**
 7. Run the server with `npm start`
 
